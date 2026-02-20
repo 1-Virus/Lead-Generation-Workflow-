@@ -1,0 +1,549 @@
+{
+  "name": "Lead Capture & Routing System",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-capture",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "16b9dea8-3a49-4e43-b63c-c4b10ed5c93c",
+      "name": "Webhook",
+      "webhookId": "b1c11b4b-dade-49e6-bfd3-c9a6439dac74"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "77a9e953-13ad-4214-bf17-a297d3a6e89f",
+              "leftValue": "={{ $json.Budget }}",
+              "rightValue": 50000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        432,
+        -16
+      ],
+      "id": "52e2d8cc-3f82-4e9f-ae95-4cd99387d795",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AFBS7UGF5",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "text": "=🚀 *New High-Value Lead!*\n*Name:* {{ $json.Name }}\n*Email:* {{ $json.Email }}\n*Budget:* ₹{{ $json.Budget }}\n*Phone:* {{ $json.Phone }}\n*Source:* {{ $json.Source }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        832,
+        -96
+      ],
+      "id": "906fe89d-25ae-4ef4-80a4-8b442a501aea",
+      "name": "Send a message",
+      "webhookId": "923a63bd-c0b1-41f7-9b45-0d5623851ae2",
+      "credentials": {
+        "slackApi": {
+          "id": "Wa5IWKUuvjvG9GEt",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "ngrok http --domain=stalkless-externally-davin.ngrok-free.dev 5678",
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -304
+      ],
+      "id": "2e0ac447-53dc-4fe3-9f9d-a89e8bd8564f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Invoke-RestMethod -Uri \"https://stalkless-externally-davin.ngrok-free.dev/webhook-test/lead-capture\" -Method Post -Body (@( @{name=\"Arjun Mehta\"; email=\"arjun.m@example.com\"; phone=\"+91 98765 43210\"; budget=75000; source=\"CMS\"}, @{name=\"Sia Gupta\"; email=\"sia.g@example.com\"; phone=\"+91 11223 34455\"; budget=35000; source=\"CMS\"} ) | ConvertTo-Json) -ContentType \"application/json\"",
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        96,
+        -304
+      ],
+      "id": "5d4a44b5-30f0-4d14-ba3a-6da19959b7b5",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1cu_5If6u8p6NOdZSUT-Fzs2AfmdPVoMh963o6Ny3k-8",
+          "mode": "list",
+          "cachedResultName": "Leads ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cu_5If6u8p6NOdZSUT-Fzs2AfmdPVoMh963o6Ny3k-8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cu_5If6u8p6NOdZSUT-Fzs2AfmdPVoMh963o6Ny3k-8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.body.name }}",
+            "Budget": "={{ $json.body.budget }}",
+            "Email": "={{ $json.body.email }}",
+            "Phone": "={{ $json.body.phone }}",
+            "Source": "={{ $json.body.source }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tag",
+              "displayName": "Tag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "71e450e1-2b74-414c-90bb-399b4b68bb1c",
+      "name": "Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "3agu8f4HpobLwW0z",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1cu_5If6u8p6NOdZSUT-Fzs2AfmdPVoMh963o6Ny3k-8",
+          "mode": "list",
+          "cachedResultName": "Leads ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cu_5If6u8p6NOdZSUT-Fzs2AfmdPVoMh963o6Ny3k-8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cu_5If6u8p6NOdZSUT-Fzs2AfmdPVoMh963o6Ny3k-8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Tag": "Priority",
+            "Email": "={{ $json.Email }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tag",
+              "displayName": "Tag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "ca765c4c-ec8c-452d-bbea-0b08e2ba82d2",
+      "name": "Priority",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "3agu8f4HpobLwW0z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1cu_5If6u8p6NOdZSUT-Fzs2AfmdPVoMh963o6Ny3k-8",
+          "mode": "list",
+          "cachedResultName": "Leads ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cu_5If6u8p6NOdZSUT-Fzs2AfmdPVoMh963o6Ny3k-8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cu_5If6u8p6NOdZSUT-Fzs2AfmdPVoMh963o6Ny3k-8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $('Data').item.json.Email }}",
+            "Tag": "Normal"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tag",
+              "displayName": "Tag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        624,
+        96
+      ],
+      "id": "94c5c36c-a17d-468a-af7d-63a713318abf",
+      "name": "Normal",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "3agu8f4HpobLwW0z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "thakre.ananya101@gmail.com",
+        "subject": "We received your inquiry!",
+        "message": "=Hi {{ $('Webhook').item.json.body[0].name }} , thank you for reaching out! We have received your request regarding a budget of ₹{{ $('Webhook').item.json.body[0].budget }} and will get back to you soon.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        96
+      ],
+      "id": "a3ec4a99-6a64-4eb1-9561-5670fc1883ae",
+      "name": "Send a message1",
+      "webhookId": "d1e36dc2-b4c2-4075-a2c2-c404cb1cc665",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "0DjOKfRnfzcwdyKo",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Priority",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Normal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Priority": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normal": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "612f8fb1-be5f-48de-b091-b0e0ac8fd62f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "48c9b1791f8d493e8a71049e6ba05f7889fa1c2d61047518307757e06aeafff0"
+  },
+  "id": "Z0AuGNQ9Wwklj4m8",
+  "tags": []
+}
